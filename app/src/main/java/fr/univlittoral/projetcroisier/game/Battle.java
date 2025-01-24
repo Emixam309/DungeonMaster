@@ -6,15 +6,18 @@ import java.util.Random;
 
 import fr.univlittoral.projetcroisier.entities.Ennemy;
 import fr.univlittoral.projetcroisier.entities.Player;
+import fr.univlittoral.projetcroisier.world.Room;
 
 public class Battle {
     private Player player;
+    private Room room;
     private Ennemy ennemy;
     private Random random;
 
-    public Battle(Player player, Ennemy ennemy) {
+    public Battle(Player player, Room room) {
         this.player = player;
-        this.ennemy = ennemy;
+        this.room = room;
+        this.ennemy = room.getEnnemy();
         this.random = new Random();
     }
 
@@ -32,6 +35,7 @@ public class Battle {
     public void win() {
         player.setScore(player.getScore() + 1);
         player.setPower(player.getPower() + 10);
+        room.setEnnemy(null);
         Log.d("Battle", "Player: " + player);
     }
 

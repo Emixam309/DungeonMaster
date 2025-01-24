@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import fr.univlittoral.projetcroisier.entities.Player;
 import fr.univlittoral.projetcroisier.game.Battle;
@@ -25,6 +29,7 @@ public class DungeonActivity extends AppCompatActivity {
     private Player player;
     private Dungeon dungeon;
     private ActivityResultLauncher<Intent> combatActivityResultLauncher;
+    private RoomViewModel roomViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class DungeonActivity extends AppCompatActivity {
 
         player = new Player("Player", 10, 100);
         dungeon = new Dungeon();
+        roomViewModel = new ViewModelProvider(this).get(RoomViewModel.class);
         TableLayout tableLayout = findViewById(R.id.room_table);
 
         TextView roomUnexplored = findViewById(R.id.tv_unexplored_rooms_value);
@@ -58,7 +64,8 @@ public class DungeonActivity extends AppCompatActivity {
                             result.getData().getIntExtra("room_x", 0),
                             result.getData().getIntExtra("room_y", 0)
                     );
-                    Battle battle = new Battle(player, room.getEnnemy());
+                    Battle battle = new Battle(player, room);
+                    room.setVisited(true);
                     if (result.getResultCode() == RESULT_OK) {
                         boolean isWon = battle.attack();
                         battleResult.setText(isWon ? R.string.victory : R.string.defeat);
@@ -67,10 +74,10 @@ public class DungeonActivity extends AppCompatActivity {
                         Log.d("DungeonActivity", "Result from CombatActivity: " + isWon);
                     } else if (result.getResultCode() == RESULT_CANCELED) {
                         battle.escape();
-                        room.setVisited(true);
                         battleResult.setText(R.string.fled);
                         Log.d("DungeonActivity", "User cancelled the action");
                     }
+                    roomViewModel.setRoom(room); // Update the room state
                     playerHealth.setText(String.valueOf(player.getHealth()));
                     if (player.getHealth() <= 0) {
                         // Disable all buttons
@@ -93,16 +100,15 @@ public class DungeonActivity extends AppCompatActivity {
             for (int j = 0; j < dungeon.getRooms()[i].length; j++) {
                 ImageButton button = new ImageButton(this);
                 Room room = dungeon.getRoom(i, j);
-                if (!room.isVisited()) {
-                    button.setImageResource(R.drawable.circle);
-                } else if (room.isVisited() && room.getEnnemy().isAlive()) {
-                    button.setImageResource(R.drawable.exclamation);
-                } else {
-                    button.setImageResource(R.drawable.baseline_check_circle);
-                }
+                updateRoomButtonIcon(button, room);
+
                 int finalI = i;
                 int finalJ = j;
                 button.setOnClickListener(v -> {
+                    if (room.getEnnemy() == null) {
+                        Toast.makeText(this, R.string.empty_room, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Intent intent = new Intent(DungeonActivity.this, BattleActivity.class);
                     intent.putExtra("player_name", player.getName());
                     intent.putExtra("player_health", player.getHealth());
@@ -115,9 +121,27 @@ public class DungeonActivity extends AppCompatActivity {
                     Log.d("DungeonActivity", "Room " + dungeon.getRoom(finalI, finalJ));
                     Log.d("DungeonActivity", "Player: " + player);
                 });
+
+                // Observe room state changes
+                roomViewModel.getRoom().observe(this, updatedRoom -> {
+                    if (updatedRoom.equals(room)) {
+                        updateRoomButtonIcon(button, updatedRoom);
+                    }
+                });
+
                 tableRow.addView(button);
             }
             tableLayout.addView(tableRow);
+        }
+    }
+
+    private void updateRoomButtonIcon(ImageButton button, Room room) {
+        if (!room.isVisited()) {
+            button.setImageResource(R.drawable.circle);
+        } else if (room.getEnnemy() != null) {
+            button.setImageResource(R.drawable.exclamation_circle);
+        } else {
+            button.setImageResource(R.drawable.check_circle);
         }
     }
 }

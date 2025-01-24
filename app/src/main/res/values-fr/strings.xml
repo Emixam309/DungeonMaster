@@ -17,4 +17,5 @@
     <string name="game_over">Jeu Terminé</string>
     <string name="game_win">Vous avez gagné la partie</string>
     <string name="game_lose">Vous avez perdu la partie</string>
+    <string name="empty_room">Cette pièce est vide</string>
 </resources>

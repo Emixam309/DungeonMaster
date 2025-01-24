@@ -17,4 +17,5 @@
     <string name="game_over">Game Over</string>
     <string name="game_win">You have won the game</string>
     <string name="game_lose">You have lose the game</string>
+    <string name="empty_room">This room is Empty</string>
 </resources>
