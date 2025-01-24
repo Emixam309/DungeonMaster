@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unexplored_rooms">Pièces non explorées</string>
+    <string name="power">Puissance</string>
+    <string name="health_points">Points de vie</string>
+    <string name="battle_result">Résultat du Combat</string>
+    <string name="waiting">En attente ...</string>
+    <string name="dungeon">Donjon</string>
+    <string name="dungeon_master">Maitre du Donjon</string>
+    <string name="player">Joueur</string>
+    <string name="ennemy">Ennemie</string>
+    <string name="attack">Attaquer</string>
+    <string name="flee">Fuir</string>
+    <string name="victory">Victoire</string>
+    <string name="defeat">Défaite</string>
+    <string name="fled">A fui</string>
+    <string name="game_over">Jeu Terminé</string>
+    <string name="game_win">Vous avez gagné la partie</string>
+    <string name="game_lose">Vous avez perdu la partie</string>
+</resources>

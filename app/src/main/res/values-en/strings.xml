@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unexplored_rooms">Unexplored rooms</string>
+    <string name="power">Power</string>
+    <string name="health_points">Health points</string>
+    <string name="battle_result">Battle result</string>
+    <string name="waiting">Waiting...</string>
+    <string name="dungeon">Dungeon</string>
+    <string name="dungeon_master">Dungeon Master</string>
+    <string name="player">Player</string>
+    <string name="ennemy">Ennemy</string>
+    <string name="attack">Attack</string>
+    <string name="flee">Flee</string>
+    <string name="victory">Victory</string>
+    <string name="defeat">Defeat</string>
+    <string name="fled">Fled</string>
+    <string name="game_over">Game Over</string>
+    <string name="game_win">You have won the game</string>
+    <string name="game_lose">You have lose the game</string>
+</resources>
