@@ -18,6 +18,10 @@
     <string name="game_win">Vous avez gagné la partie</string>
     <string name="game_lose">Vous avez perdu la partie</string>
     <string name="empty_room">Cette pièce est vide</string>
-    <string name="health_potion_found">Health Potion Found!</string>
-    <string name="power_charm_found">Power Charm found!</string>
+    <string name="health_potion_found">Potion de soin trouvée !</string>
+    <string name="power_charm_found">Charme de puissance trouvé !</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="health_potion_description">Elle restitue entre 1 et 3 points de vie. Voulez vous l\'utiliser ?</string>
+    <string name="power_charm_description">Il augmente votre puissance de 5 à 10 points. Voulez vous l\'utiliser ?</string>
 </resources>

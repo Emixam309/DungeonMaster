@@ -4,7 +4,7 @@ Liste des tâches à faire :
 
 - [x] le joueur possède deux attributs : une puissance (initialisée à 100 par exemple, mais devant être facilement modifiable ...) et des points de vie (initialisés à 10 par exemple, mais devant également être facilement modifiables ...) ;
 - [x] un adversaire présent dans le donjon ne disposera que d'un attribut de puissance ;
-- [ ] le donjon sera constitué de 16 pièces, initialisées avec un adversaire de puissance aléatoire comprise entre 1 et 150 au lancement de l'application (voir la rubrique 3 ci-après) ;
+- [x] le donjon sera constitué de 16 pièces, initialisées avec un adversaire de puissance aléatoire comprise entre 1 et 150 au lancement de l'application (voir la rubrique 3 ci-après) ;
 - [x] dans le cadre de l'activité de combat, le joueur voit ses propres attributs et la puissance de l'adversaire qui se trouve dans la pièce choisie. Il a le choix entre le combattre ou fuir :
   - [x] en cas de fuite, le joueur perd 1 point de vie et l'adversaire reste présent dans sa pièce ;
   - [x] en cas d'attaque et de défaite, le joueur perd 3 points de vie et l'adversaire reste présent dans sa pièce ;
@@ -16,7 +16,7 @@ Liste des tâches à faire :
   - [x] le libellé d'une pièce doit changer dès que l'adversaire qui s'y trouvait a été battu (cf les X visibles sur les différentes captures d'écran présentes dans la rubrique 4) ;
   - [x] le choix d'une pièce vide (adversaire battu) doit déclencher l'affichage d'un message, sans lancement de l'activité de combat ;
   - [x] lorsque le nombre de points de vie devient ≤ 0, le joueur a perdu, un message s'affiche (cf rubrique 4) et le joueur ne peut plus jouer tant qu'il n'a pas relancé le jeu via le menu ;
-  - [ ] lorsque le joueur a vaincu tous ses adversaires, il a gagné la partie et il ne peut plus jouer tant qu'il n'a pas relancé le jeu via le menu ;
+  - [x] lorsque le joueur a vaincu tous ses adversaires, il a gagné la partie et il ne peut plus jouer tant qu'il n'a pas relancé le jeu via le menu ;
 
 Cette seconde partie consite à améliorer la première version du jeu, en tenant compte des demandes qui suivent :
 

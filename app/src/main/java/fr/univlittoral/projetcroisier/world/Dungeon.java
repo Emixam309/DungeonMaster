@@ -11,8 +11,8 @@ public class Dungeon {
     private double difficulty;
 
     public Dungeon(double difficulty) {
-        int rows = 4;
-        int cols = 4;
+        int rows = 3;
+        int cols = 3;
         this.difficulty = difficulty;
         rooms = new Room[rows][cols];
 

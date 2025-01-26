@@ -26,10 +26,10 @@ public class Enemy extends Entity {
             String[] lowPowerNames = {"Slime", "Rat", "Bat", "Hornet", "Imp", "Jellyfish", "Plant", "Willowisp"};
             return lowPowerNames[(int) (Math.random() * lowPowerNames.length)];
         } else if (power < 200) {
-            String[] mediumPowerNames = {"Cockatrice", "Soldier", "Skeleton", "Swordsman", "Zombie", "Skeleton", "Rogue", "Fanatic", "Ghost", "Puppet", "Scorpion", "Snake", "Spider", "Mimic", "Mage", "Lamia"};
+            String[] mediumPowerNames = {"Cockatrice", "Soldier", "Skeleton", "Swordsman", "Zombie", "Skeleton", "Rogue", "Fanatic", "Ghost", "Puppet", "Scorpion", "Snake", "Spider", "Mimic", "Mage"};
             return mediumPowerNames[(int) (Math.random() * mediumPowerNames.length)];
         } else if (power < 300) {
-            String[] highPowerNames = {"Assassin","Captain", "Vampire", "Werewolf", "Ogre", "Orc", "Sahuagin", "Chimera", "Demon", "Gargoyle", "Garuda", "Gazer", "General"};
+            String[] highPowerNames = {"Assassin","Captain", "Vampire", "Werewolf", "Ogre", "Orc", "Sahuagin", "Chimera", "Demon", "Gargoyle", "Garuda", "Gazer", "General", "Lamia"};
             return highPowerNames[(int) (Math.random() * highPowerNames.length)];
         } else if (power < 400) {
             String[] veryHighPowerNames = {"Behemoth", "Cerberus", "Dragon", "Minotaur", "Darklord", "Irongiant", "Vampire", "Succubus"};

@@ -20,4 +20,8 @@
     <string name="empty_room">This room is Empty</string>
     <string name="health_potion_found">Health Potion Found!</string>
     <string name="power_charm_found">Power Charm found!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="health_potion_description">It restores between 1 and 3 health points. Do you want to use it?</string>
+    <string name="power_charm_description">It increases your power by 5 to 10 points. Do you want to use it?</string>
 </resources>

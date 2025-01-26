@@ -1,5 +1,6 @@
 package fr.univlittoral.projetcroisier;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class DungeonActivity extends AppCompatActivity {
     private TextView battleResultTitle;
     private TextView battleResult;
     private TextView roomUnexplored;
+    private TableLayout tableLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class DungeonActivity extends AppCompatActivity {
         player = new Player("Player", 10, 100);
         dungeon = new Dungeon(1);
         roomViewModel = new ViewModelProvider(this).get(RoomViewModel.class);
-        TableLayout tableLayout = findViewById(R.id.room_table);
+        tableLayout = findViewById(R.id.room_table);
 
         roomUnexplored = findViewById(R.id.tv_unexplored_rooms_value);
         roomUnexplored.setText(String.valueOf(dungeon.getNumberOfUnvisitedRooms()));
@@ -82,6 +84,12 @@ public class DungeonActivity extends AppCompatActivity {
                             playerPower.setText(String.valueOf(player.getPower()));
                             roomUnexplored.setText(String.valueOf(dungeon.getNumberOfUnvisitedRooms()));
                             Log.d("DungeonActivity", "Result from CombatActivity: " + isWon);
+                            if (areAllRoomsEmpty()) {
+                                disableAllRoomButtons();
+                                // Display game over message
+                                battleResultTitle.setText(R.string.game_over);
+                                battleResult.setText(R.string.game_win);
+                            }
                         } else if (result.getResultCode() == RESULT_CANCELED) {
                             battle.escape();
                             battleResult.setText(R.string.fled);
@@ -90,13 +98,7 @@ public class DungeonActivity extends AppCompatActivity {
                         roomViewModel.setRoom(room); // Update the room state
                         playerHealth.setText(String.valueOf(player.getHealth()));
                         if (player.getHealth() <= 0) {
-                            // Disable all buttons
-                            for (int i = 0; i < tableLayout.getChildCount(); i++) {
-                                TableRow row = (TableRow) tableLayout.getChildAt(i);
-                                for (int j = 0; j < row.getChildCount(); j++) {
-                                    row.getChildAt(j).setEnabled(false);
-                                }
-                            }
+                            disableAllRoomButtons();
                             // Display game over message
                             battleResultTitle.setText(R.string.game_over);
                             battleResult.setText(R.string.game_lose);
@@ -119,7 +121,9 @@ public class DungeonActivity extends AppCompatActivity {
                     if (room.getEntity() == null) {
                         Toast.makeText(this, R.string.empty_room, Toast.LENGTH_SHORT).show();
                     } else if (room.getEntity() instanceof Item) {
-                        handleItemFound((Item) room.getEntity());
+                        // Display a dialog
+                        showItemDialog((Item) room.getEntity(), room);
+                        roomViewModel.setRoom(room); // Update the room state
                     } else if (room.getEntity() instanceof Enemy) {
                         Intent intent = new Intent(DungeonActivity.this, BattleActivity.class);
                         intent.putExtra("player_name", player.getName());
@@ -148,20 +152,6 @@ public class DungeonActivity extends AppCompatActivity {
         }
     }
 
-    private void handleItemFound(Item item) {
-        if (item.getType() == ItemType.HEALTH_POTION) {
-            int healthRestored = new Random().nextInt(3) + 1;
-            player.setHealth(player.getHealth() + healthRestored);
-            playerHealth.setText(String.valueOf(player.getHealth()));
-            Toast.makeText(this, R.string.health_potion_found, Toast.LENGTH_SHORT).show();
-        } else if (item.getType() == ItemType.POWER_CHARM) {
-            int powerBoost = new Random().nextInt(6) + 5;
-            player.setPower(player.getPower() + powerBoost);
-            playerPower.setText(String.valueOf(player.getPower()));
-            Toast.makeText(this, R.string.power_charm_found, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void updateRoomButtonIcon(ImageButton button, Room room) {
         if (!room.isVisited()) {
             button.setImageResource(R.drawable.circle);
@@ -170,5 +160,60 @@ public class DungeonActivity extends AppCompatActivity {
         } else {
             button.setImageResource(R.drawable.check_circle);
         }
+    }
+
+    private void showItemDialog(Item item, Room room) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        if (item.getType() == ItemType.HEALTH_POTION) {
+            builder.setTitle(R.string.health_potion_found);
+            builder.setMessage(R.string.health_potion_description);
+        } else {
+            builder.setTitle(R.string.power_charm_found);
+            builder.setMessage(R.string.power_charm_description);
+        }
+
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            item.useItem(player);
+            playerHealth.setText(String.valueOf(player.getHealth()));
+            playerPower.setText(String.valueOf(player.getPower()));
+            room.setVisited(true);
+            room.setEntity(null);
+            roomViewModel.setRoom(room); // Update the room state
+        });
+
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {
+            room.setVisited(true);
+            roomViewModel.setRoom(room); // Update the room state
+            dialog.dismiss();
+        });
+
+        builder.setOnDismissListener(dialog -> {
+            room.setVisited(true);
+            roomViewModel.setRoom(room); // Update the room state
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void disableAllRoomButtons() {
+        for (int i = 0; i < tableLayout.getChildCount(); i++) {
+            TableRow row = (TableRow) tableLayout.getChildAt(i);
+            for (int j = 0; j < row.getChildCount(); j++) {
+                row.getChildAt(j).setEnabled(false);
+            }
+        }
+    }
+
+    private boolean areAllRoomsEmpty() {
+        for (Room[] row : dungeon.getRooms()) {
+            for (Room room : row) {
+                if (room.getEntity() != null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
