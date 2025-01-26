@@ -1,18 +1,53 @@
 package fr.univlittoral.projetcroisier.world;
 
-import fr.univlittoral.projetcroisier.entities.Ennemy;
+import fr.univlittoral.projetcroisier.entities.Enemy;
+import fr.univlittoral.projetcroisier.entities.Item;
+import fr.univlittoral.projetcroisier.enums.ItemType;
+
+import java.util.Random;
 
 public class Dungeon {
     private Room[][] rooms;
+    private double difficulty;
 
-    public Dungeon() {
+    public Dungeon(double difficulty) {
         int rows = 4;
         int cols = 4;
+        this.difficulty = difficulty;
         rooms = new Room[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                rooms[i][j] = new Room(new Ennemy("Ennemy", 50));
+                rooms[i][j] = new Room(null); // Initialize rooms without enemies
+            }
+        }
+
+        placeRandomItems();
+        placeRandomEnemies(difficulty);
+    }
+
+    private void placeRandomItems() {
+        Random random = new Random();
+        int itemCount = 0;
+
+        while (itemCount < 2) {
+            int row = random.nextInt(rooms.length);
+            int col = random.nextInt(rooms[0].length);
+
+            if (rooms[row][col].getEntity() == null) {
+                ItemType itemType = random.nextBoolean() ? ItemType.HEALTH_POTION : ItemType.POWER_CHARM;
+                rooms[row][col].setEntity(new Item(itemType));
+                itemCount++;
+            }
+        }
+    }
+
+    private void placeRandomEnemies(double difficulty) {
+        for (Room[] room : rooms) {
+            for (Room value : room) {
+                if (value.getEntity() == null) {
+                    value.setEntity(new Enemy(difficulty));
+                }
             }
         }
     }
@@ -23,6 +58,14 @@ public class Dungeon {
 
     public void setRooms(Room[][] rooms) {
         this.rooms = rooms;
+    }
+
+    public double getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(double difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Room getRoom(int i, int j) {

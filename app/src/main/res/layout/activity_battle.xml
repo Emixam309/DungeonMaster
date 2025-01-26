@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_escape"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opponentLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/playerLayout" />
 
     <Button
         android:id="@+id/btn_escape"
@@ -38,11 +38,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/opponentLayout"
+        app:layout_constraintBottom_toTopOf="@+id/btn_attack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/opponentLayout">
 
         <TextView
             android:id="@+id/tv_joueur"
@@ -68,7 +68,6 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tv_puissance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -78,7 +77,6 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_points_vie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -121,32 +119,46 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btn_attack"
+        app:layout_constraintBottom_toTopOf="@+id/playerLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_adversaire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ennemy"
+            android:text="@string/enemy"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_ennemy_name"
+            android:id="@+id/tv_enemy_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ennemy Name" />
+            android:text="Enemy Name" />
+
+        <ImageView
+            android:id="@+id/enemy_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/power"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_ennemy_power"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="93"
+            android:text="100"
             android:textSize="16sp" />
     </LinearLayout>
 

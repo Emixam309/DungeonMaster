@@ -1,17 +1,29 @@
 package fr.univlittoral.projetcroisier.entities;
 
-public class Item {
-    private String name;
+import fr.univlittoral.projetcroisier.enums.ItemType;
 
-    public Item(String name) {
-        this.name = name;
+public class Item extends Entity {
+    private ItemType type;
+
+    public Item(ItemType type) {
+        super("");
+        this.type = type;
+        this.name = type.toString();
     }
 
-    public String getName() {
-        return name;
+    public ItemType getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(ItemType type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

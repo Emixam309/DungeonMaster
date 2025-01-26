@@ -3,6 +3,7 @@ package fr.univlittoral.projetcroisier;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,9 +28,9 @@ public class BattleActivity extends AppCompatActivity {
         TextView playerNameTextView = findViewById(R.id.tv_player_name_battle);
         TextView playerHealthTextView = findViewById(R.id.tv_player_health_battle);
         TextView playerPowerTextView = findViewById(R.id.tv_player_power_battle);
-        TextView ennemyNameTextView = findViewById(R.id.tv_ennemy_name);
+        TextView ennemyNameTextView = findViewById(R.id.tv_enemy_name);
         TextView ennemyPowerTextView = findViewById(R.id.tv_ennemy_power);
-
+        ImageView enemyImageView = findViewById(R.id.enemy_image_view);
 
         String player_name = getIntent().getStringExtra("player_name");
         playerNameTextView.setText(player_name);
@@ -38,9 +39,12 @@ public class BattleActivity extends AppCompatActivity {
         int player_power = getIntent().getIntExtra("player_power", 0);
         playerPowerTextView.setText(String.valueOf(player_power));
         String entity_name = getIntent().getStringExtra("entity_name");
-        ennemyNameTextView.setText(entity_name);
         int entity_power = getIntent().getIntExtra("entity_power", 0);
         ennemyPowerTextView.setText(String.valueOf(entity_power));
+
+        assert entity_name != null;
+        ennemyNameTextView.setText(getResources().getIdentifier(entity_name.toLowerCase(), "string", getPackageName()));
+        enemyImageView.setImageResource(getResources().getIdentifier(entity_name.toLowerCase(), "drawable", getPackageName()));
 
         Button attackButton = findViewById(R.id.btn_attack);
         Button escapeButton = findViewById(R.id.btn_escape);

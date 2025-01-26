@@ -1,21 +1,22 @@
 package fr.univlittoral.projetcroisier.world;
 
-import fr.univlittoral.projetcroisier.entities.Ennemy;
+import fr.univlittoral.projetcroisier.entities.Enemy;
+import fr.univlittoral.projetcroisier.entities.Entity;
 
 public class Room {
-    private Ennemy ennemy;
+    private Entity entity;
     private boolean visited;
 
-    public Room(Ennemy ennemy) {
-        this.ennemy = ennemy;
+    public Room(Enemy entity) {
+        this.entity = entity;
     }
 
-    public Ennemy getEnnemy() {
-        return ennemy;
+    public Entity getEntity() {
+        return entity;
     }
 
-    public void setEnnemy(Ennemy ennemy) {
-        this.ennemy = ennemy;
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 
     public boolean isVisited() {
@@ -29,7 +30,7 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "ennemy=" + ennemy +
+                "entity=" + entity +
                 ", visited=" + visited +
                 '}';
     }

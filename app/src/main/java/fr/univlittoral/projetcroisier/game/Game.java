@@ -13,7 +13,7 @@ public class Game {
         this.difficulty = difficulty;
         this.player = new Player(playerName, 10, 100);
         initializePlayerAttributes();
-        this.dungeon = new Dungeon();
+        this.dungeon = new Dungeon(1);
     }
 
     private void initializePlayerAttributes() {

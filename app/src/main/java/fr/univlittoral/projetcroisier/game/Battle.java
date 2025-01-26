@@ -4,20 +4,20 @@ import android.util.Log;
 
 import java.util.Random;
 
-import fr.univlittoral.projetcroisier.entities.Ennemy;
+import fr.univlittoral.projetcroisier.entities.Enemy;
 import fr.univlittoral.projetcroisier.entities.Player;
 import fr.univlittoral.projetcroisier.world.Room;
 
 public class Battle {
     private Player player;
     private Room room;
-    private Ennemy ennemy;
+    private Enemy enemy;
     private Random random;
 
     public Battle(Player player, Room room) {
         this.player = player;
         this.room = room;
-        this.ennemy = room.getEnnemy();
+        this.enemy = (Enemy) room.getEntity();
         this.random = new Random();
     }
 
@@ -35,7 +35,7 @@ public class Battle {
     public void win() {
         player.setScore(player.getScore() + 1);
         player.setPower(player.getPower() + 10);
-        room.setEnnemy(null);
+        room.setEntity(null);
         Log.d("Battle", "Player: " + player);
     }
 
@@ -52,6 +52,6 @@ public class Battle {
     public double calculateResult() {
         double randPlayer = random.nextDouble();
         double randEnnemy = random.nextDouble();
-        return player.getPower() * randPlayer - ennemy.getPower() * randEnnemy;
+        return player.getPower() * randPlayer - enemy.getPower() * randEnnemy;
     }
 }

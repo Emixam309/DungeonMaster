@@ -8,7 +8,7 @@
     <string name="dungeon">Donjon</string>
     <string name="dungeon_master">Maitre du Donjon</string>
     <string name="player">Joueur</string>
-    <string name="ennemy">Ennemie</string>
+    <string name="enemy">Ennemie</string>
     <string name="attack">Attaquer</string>
     <string name="flee">Fuir</string>
     <string name="victory">Victoire</string>
@@ -18,4 +18,6 @@
     <string name="game_win">Vous avez gagné la partie</string>
     <string name="game_lose">Vous avez perdu la partie</string>
     <string name="empty_room">Cette pièce est vide</string>
+    <string name="health_potion_found">Health Potion Found!</string>
+    <string name="power_charm_found">Power Charm found!</string>
 </resources>

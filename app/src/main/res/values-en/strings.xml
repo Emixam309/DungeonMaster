@@ -8,7 +8,7 @@
     <string name="dungeon">Dungeon</string>
     <string name="dungeon_master">Dungeon Master</string>
     <string name="player">Player</string>
-    <string name="ennemy">Ennemy</string>
+    <string name="enemy">Enemy</string>
     <string name="attack">Attack</string>
     <string name="flee">Flee</string>
     <string name="victory">Victory</string>
@@ -18,4 +18,6 @@
     <string name="game_win">You have won the game</string>
     <string name="game_lose">You have lose the game</string>
     <string name="empty_room">This room is Empty</string>
+    <string name="health_potion_found">Health Potion Found!</string>
+    <string name="power_charm_found">Power Charm found!</string>
 </resources>
