@@ -1,4 +1,4 @@
-package fr.univlittoral.projetcroisier;
+package fr.univlittoral.projetcroisier.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import fr.univlittoral.projetcroisier.R;
+import fr.univlittoral.projetcroisier.intents.BattleIntents;
+
 public class BattleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        setTitle(R.string.battle_title);
         setContentView(R.layout.activity_battle);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.combat_activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -32,14 +36,14 @@ public class BattleActivity extends AppCompatActivity {
         TextView ennemyPowerTextView = findViewById(R.id.tv_ennemy_power);
         ImageView enemyImageView = findViewById(R.id.enemy_image_view);
 
-        String player_name = getIntent().getStringExtra("player_name");
+        String player_name = getIntent().getStringExtra(BattleIntents.PLAYER_NAME);
         playerNameTextView.setText(player_name);
-        int player_health = getIntent().getIntExtra("player_health", 0);
+        int player_health = getIntent().getIntExtra(BattleIntents.PLAYER_HEALTH, 0);
         playerHealthTextView.setText(String.valueOf(player_health));
-        int player_power = getIntent().getIntExtra("player_power", 0);
+        int player_power = getIntent().getIntExtra(BattleIntents.PLAYER_POWER, 0);
         playerPowerTextView.setText(String.valueOf(player_power));
-        String entity_name = getIntent().getStringExtra("entity_name");
-        int entity_power = getIntent().getIntExtra("entity_power", 0);
+        String entity_name = getIntent().getStringExtra(BattleIntents.ENTITY_NAME);
+        int entity_power = getIntent().getIntExtra(BattleIntents.ENTITY_POWER, 0);
         ennemyPowerTextView.setText(String.valueOf(entity_power));
 
         assert entity_name != null;

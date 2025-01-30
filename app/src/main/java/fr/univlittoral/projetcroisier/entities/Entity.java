@@ -1,6 +1,10 @@
 package fr.univlittoral.projetcroisier.entities;
 
-public abstract class Entity {
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable {
     String name;
 
     public Entity(String name) {

@@ -1,9 +1,12 @@
-package fr.univlittoral.projetcroisier;
+package fr.univlittoral.projetcroisier.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,33 +22,40 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Random;
-
+import fr.univlittoral.projetcroisier.R;
 import fr.univlittoral.projetcroisier.entities.Enemy;
 import fr.univlittoral.projetcroisier.entities.Item;
 import fr.univlittoral.projetcroisier.entities.Player;
+import fr.univlittoral.projetcroisier.enums.Difficulty;
 import fr.univlittoral.projetcroisier.enums.ItemType;
 import fr.univlittoral.projetcroisier.game.Battle;
+import fr.univlittoral.projetcroisier.game.Game;
+import fr.univlittoral.projetcroisier.intents.BattleIntents;
+import fr.univlittoral.projetcroisier.intents.DungeonIntents;
 import fr.univlittoral.projetcroisier.viewmodels.RoomViewModel;
 import fr.univlittoral.projetcroisier.world.Dungeon;
 import fr.univlittoral.projetcroisier.world.Room;
 
 public class DungeonActivity extends AppCompatActivity {
+    private Game game;
     private Player player;
     private Dungeon dungeon;
-    private ActivityResultLauncher<Intent> combatActivityResultLauncher;
     private RoomViewModel roomViewModel;
+    private TextView levelValue;
     private TextView playerPower;
     private TextView playerHealth;
-    private TextView battleResultTitle;
-    private TextView battleResult;
+    private TextView resultTitle;
+    private TextView resultValue;
     private TextView roomUnexplored;
     private TableLayout tableLayout;
+    private Button nextLevelButton;
+    private ActivityResultLauncher<Intent> combatActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        setTitle(R.string.dungeon);
         setContentView(R.layout.activity_dungeon);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.dungeon_activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -53,19 +63,44 @@ public class DungeonActivity extends AppCompatActivity {
             return insets;
         });
 
-        player = new Player("Player", 10, 100);
-        dungeon = new Dungeon(1);
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        } else if (getIntent().getExtras() == null) {
+            Intent intent = new Intent(this, ConfigurationActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        } else {
+            String playerName = getIntent().getStringExtra(DungeonIntents.PLAYER_NAME);
+            int playerHealth = getIntent().getIntExtra(DungeonIntents.PLAYER_HEALTH, 10);
+            int playerPower = getIntent().getIntExtra(DungeonIntents.PLAYER_POWER, 100);
+            int rows = getIntent().getIntExtra(DungeonIntents.ROWS, 4);
+            int columns = getIntent().getIntExtra(DungeonIntents.COLUMNS, 4);
+            int level = getIntent().getIntExtra(DungeonIntents.LEVEL, 1);
+            int score = getIntent().getIntExtra(DungeonIntents.SCORE, 0);
+            Difficulty difficulty = (Difficulty) getIntent().getSerializableExtra(DungeonIntents.DIFFICULTY);
+            double difficultyMultiplier = getIntent().getDoubleExtra(DungeonIntents.DIFFICULTY_MULTIPLIER, 1.0);
+
+            player = new Player(playerName, playerHealth, playerPower);
+            game = new Game(player, difficulty, difficultyMultiplier, rows, columns, level, score);
+        }
+        player = game.getPlayer();
+        dungeon = game.getDungeon();
         roomViewModel = new ViewModelProvider(this).get(RoomViewModel.class);
         tableLayout = findViewById(R.id.room_table);
-
+        levelValue = findViewById(R.id.tv_level_value);
+        levelValue.setText(String.valueOf(game.getLevel()));
         roomUnexplored = findViewById(R.id.tv_unexplored_rooms_value);
         roomUnexplored.setText(String.valueOf(dungeon.getNumberOfUnvisitedRooms()));
         playerPower = findViewById(R.id.tv_power_value);
         playerPower.setText(String.valueOf(player.getPower()));
         playerHealth = findViewById(R.id.tv_health_value);
         playerHealth.setText(String.valueOf(player.getHealth()));
-        battleResultTitle = findViewById(R.id.tv_battle_result_title);
-        battleResult = findViewById(R.id.tv_battle_result);
+        resultTitle = findViewById(R.id.tv_result_title);
+        resultValue = findViewById(R.id.tv_result_value);
+        nextLevelButton = findViewById(R.id.next_level_btn);
+
+        checkEndDungeon();
 
         combatActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -80,19 +115,15 @@ public class DungeonActivity extends AppCompatActivity {
                         room.setVisited(true);
                         if (result.getResultCode() == RESULT_OK) {
                             boolean isWon = battle.attack();
-                            battleResult.setText(isWon ? R.string.victory : R.string.defeat);
+                            resultTitle.setText(R.string.battle_result);
+                            resultValue.setText(isWon ? R.string.victory : R.string.defeat);
                             playerPower.setText(String.valueOf(player.getPower()));
                             roomUnexplored.setText(String.valueOf(dungeon.getNumberOfUnvisitedRooms()));
                             Log.d("DungeonActivity", "Result from CombatActivity: " + isWon);
-                            if (areAllRoomsEmpty()) {
-                                disableAllRoomButtons();
-                                // Display game over message
-                                battleResultTitle.setText(R.string.game_over);
-                                battleResult.setText(R.string.game_win);
-                            }
+                            checkEndDungeon();
                         } else if (result.getResultCode() == RESULT_CANCELED) {
                             battle.escape();
-                            battleResult.setText(R.string.fled);
+                            this.resultValue.setText(R.string.fled);
                             Log.d("DungeonActivity", "User cancelled the action");
                         }
                         roomViewModel.setRoom(room); // Update the room state
@@ -100,8 +131,8 @@ public class DungeonActivity extends AppCompatActivity {
                         if (player.getHealth() <= 0) {
                             disableAllRoomButtons();
                             // Display game over message
-                            battleResultTitle.setText(R.string.game_over);
-                            battleResult.setText(R.string.game_lose);
+                            resultTitle.setText(R.string.game_over);
+                            resultValue.setText(R.string.game_lose);
                         }
                     }
                 }
@@ -126,13 +157,13 @@ public class DungeonActivity extends AppCompatActivity {
                         roomViewModel.setRoom(room); // Update the room state
                     } else if (room.getEntity() instanceof Enemy) {
                         Intent intent = new Intent(DungeonActivity.this, BattleActivity.class);
-                        intent.putExtra("player_name", player.getName());
-                        intent.putExtra("player_health", player.getHealth());
-                        intent.putExtra("player_power", player.getPower());
-                        intent.putExtra("room_x", finalI);
-                        intent.putExtra("room_y", finalJ);
-                        intent.putExtra("entity_name", dungeon.getRoom(finalI, finalJ).getEntity().getName());
-                        intent.putExtra("entity_power", ((Enemy) dungeon.getRoom(finalI, finalJ).getEntity()).getPower());
+                        intent.putExtra(BattleIntents.PLAYER_NAME, player.getName());
+                        intent.putExtra(BattleIntents.PLAYER_HEALTH, player.getHealth());
+                        intent.putExtra(BattleIntents.PLAYER_POWER, player.getPower());
+                        intent.putExtra(BattleIntents.ROOM_X, finalI);
+                        intent.putExtra(BattleIntents.ROOM_Y, finalJ);
+                        intent.putExtra(BattleIntents.ENTITY_NAME, dungeon.getRoom(finalI, finalJ).getEntity().getName());
+                        intent.putExtra(BattleIntents.ENTITY_POWER, ((Enemy) dungeon.getRoom(finalI, finalJ).getEntity()).getPower());
                         combatActivityResultLauncher.launch(intent);
                         Log.d("DungeonActivity", "Room:" + dungeon.getRoom(finalI, finalJ));
                         Log.d("DungeonActivity", "Player: " + player);
@@ -150,6 +181,66 @@ public class DungeonActivity extends AppCompatActivity {
             }
             tableLayout.addView(tableRow);
         }
+
+        nextLevelButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, DungeonActivity.class);
+            Log.d("DungeonActivity", "Player: " + player);
+            intent.putExtra(DungeonIntents.PLAYER_NAME, player.getName());
+            intent.putExtra(DungeonIntents.PLAYER_HEALTH, player.getHealth());
+            intent.putExtra(DungeonIntents.PLAYER_POWER, player.getPower());
+            intent.putExtra(DungeonIntents.ROWS, dungeon.getRows());
+            intent.putExtra(DungeonIntents.COLUMNS, dungeon.getColumns());
+            intent.putExtra(DungeonIntents.LEVEL, game.getLevel() + 1);
+            intent.putExtra(DungeonIntents.SCORE, game.getScore());
+            intent.putExtra(DungeonIntents.DIFFICULTY, game.getDifficulty());
+            intent.putExtra(DungeonIntents.DIFFICULTY_MULTIPLIER, game.getDifficultyMultiplier());
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DungeonIntents.PLAYER_NAME, player.getName());
+        outState.putInt(DungeonIntents.PLAYER_HEALTH, player.getHealth());
+        outState.putInt(DungeonIntents.PLAYER_POWER, player.getPower());
+        outState.putSerializable(DungeonIntents.DUNGEON, dungeon);
+        outState.putInt(DungeonIntents.DIFFICULTY, game.getDifficulty().ordinal());
+        outState.putInt(DungeonIntents.LEVEL, game.getLevel());
+        outState.putInt(DungeonIntents.SCORE, game.getScore());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            String playerName = savedInstanceState.getString(DungeonIntents.PLAYER_NAME);
+            int playerHealth = savedInstanceState.getInt(DungeonIntents.PLAYER_HEALTH);
+            int playerPower = savedInstanceState.getInt(DungeonIntents.PLAYER_POWER);
+            Difficulty difficulty = Difficulty.values()[savedInstanceState.getInt(DungeonIntents.DIFFICULTY)];
+            Dungeon acutalDungeon = (Dungeon) savedInstanceState.getSerializable(DungeonIntents.DUNGEON);
+            int level = savedInstanceState.getInt(DungeonIntents.LEVEL);
+            int score = savedInstanceState.getInt(DungeonIntents.SCORE);
+            player = new Player(playerName, playerHealth, playerPower);
+            game = new Game(player, difficulty, acutalDungeon, level, score);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_restart_game) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateRoomButtonIcon(ImageButton button, Room room) {
@@ -177,20 +268,23 @@ public class DungeonActivity extends AppCompatActivity {
             item.useItem(player);
             playerHealth.setText(String.valueOf(player.getHealth()));
             playerPower.setText(String.valueOf(player.getPower()));
-            room.setVisited(true);
             room.setEntity(null);
-            roomViewModel.setRoom(room); // Update the room state
+            resultValue.setText(R.string.item_used);
         });
 
         builder.setNegativeButton(R.string.no, (dialog, which) -> {
-            room.setVisited(true);
-            roomViewModel.setRoom(room); // Update the room state
-            dialog.dismiss();
+            resultValue.setText(R.string.item_left);
+        });
+
+        builder.setOnCancelListener(dialog -> {
+            resultValue.setText(R.string.item_left);
         });
 
         builder.setOnDismissListener(dialog -> {
             room.setVisited(true);
+            resultTitle.setText(R.string.exploration_result);
             roomViewModel.setRoom(room); // Update the room state
+            checkEndDungeon();
         });
 
         AlertDialog dialog = builder.create();
@@ -203,6 +297,17 @@ public class DungeonActivity extends AppCompatActivity {
             for (int j = 0; j < row.getChildCount(); j++) {
                 row.getChildAt(j).setEnabled(false);
             }
+        }
+    }
+
+    private void checkEndDungeon() {
+        if (areAllRoomsEmpty()) {
+            disableAllRoomButtons();
+            // Display game over message
+            resultTitle.setText(R.string.game_over);
+            resultValue.setText(R.string.game_win);
+            // display next level button
+            nextLevelButton.setVisibility(Button.VISIBLE);
         }
     }
 

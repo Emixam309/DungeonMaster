@@ -1,5 +1,7 @@
 package fr.univlittoral.projetcroisier.game;
 
+import java.io.Serializable;
+
 import fr.univlittoral.projetcroisier.entities.Player;
 import fr.univlittoral.projetcroisier.enums.Difficulty;
 import fr.univlittoral.projetcroisier.world.Dungeon;
@@ -7,32 +9,84 @@ import fr.univlittoral.projetcroisier.world.Dungeon;
 public class Game {
     private Player player;
     private Difficulty difficulty;
+    private double difficultyMultiplier;
     private Dungeon dungeon;
+    private int score;
+    private int level;
 
-    public Game(String playerName, Difficulty difficulty) {
+    public Game(Player player, Difficulty difficulty, double difficultyMultiplier, int rows, int columns, int level, int score) {
+        this.player = player;
         this.difficulty = difficulty;
-        this.player = new Player(playerName, 10, 100);
-        initializePlayerAttributes();
-        this.dungeon = new Dungeon(1);
+        this.dungeon = new Dungeon(difficultyMultiplier, rows, columns);
+        this.difficultyMultiplier = difficultyMultiplier;
+        this.level = level;
+        this.score = score;
     }
 
-    private void initializePlayerAttributes() {
-        switch (difficulty) {
-            case EASY:
-                player.setPower(150);
-                player.setHealth(15);
-                break;
-            case MEDIUM:
-                player.setPower(100);
-                player.setHealth(10);
-                break;
-            case HARD:
-                player.setPower(50);
-                player.setHealth(5);
-                break;
-            case CUSTOM:
-                // Do nothing
-                break;
-        }
+    public Game(Player player, Difficulty difficulty, Dungeon dungeon, int level, int score) {
+        this.player = player;
+        this.difficulty = difficulty;
+        this.dungeon = dungeon;
+        this.level = level;
+        this.score = score;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public double getDifficultyMultiplier() {
+        return difficultyMultiplier;
+    }
+
+    public void setDifficultyMultiplier(double difficultyMultiplier) {
+        this.difficultyMultiplier = difficultyMultiplier;
+    }
+
+    public Dungeon getDungeon() {
+        return dungeon;
+    }
+
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "player=" + player +
+                ", difficulty=" + difficulty +
+                ", dungeon=" + dungeon +
+                ", score=" + score +
+                ", level=" + level +
+                '}';
     }
 }

@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name" translatable="false">projetCroisier</string>
+    <string name="app_name">Dungeon Master</string>
     <string name="unexplored_rooms">Unexplored rooms</string>
     <string name="power">Power</string>
     <string name="health_points">Health points</string>
     <string name="battle_result">Battle result</string>
     <string name="waiting">Waiting...</string>
     <string name="dungeon">Dungeon</string>
-    <string name="dungeon_master">Dungeon Master</string>
     <string name="player">Player</string>
     <string name="enemy">Enemy</string>
     <string name="attack">Attack</string>
@@ -24,4 +23,24 @@
     <string name="no">No</string>
     <string name="health_potion_description">It restores between 1 and 3 health points. Do you want to use it?</string>
     <string name="power_charm_description">It increases your power by 5 to 10 points. Do you want to use it?</string>
+    <string name="restart_game">Restart the game</string>
+    <string name="level">Level</string>
+    <string name="battle_title">Battle</string>
+    <string name="exploration_result">Exploration result</string>
+    <string name="item_left">Item left in the room</string>
+    <string name="item_used">Item used</string>
+    <string name="go_to_next_level">Go to the next level</string>
+    <string name="validate">Validate</string>
+    <string name="configuration_title">Configuration</string>
+    <string name="player_stats">Player stats</string>
+    <string name="dungeon_gen">Dungeon generation</string>
+    <string name="level_size">Level size</string>
+    <string name="difficulty_increase_multiplier">Difficulty increase multiplier</string>
+    <string name="player_name">Player Name</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="game_config">Game Configuration</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_custom">Custom</string>
 </resources>

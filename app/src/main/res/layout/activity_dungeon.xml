@@ -6,41 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".DungeonActivity">
+    tools:context=".activities.DungeonActivity">
 
     <!-- Titre principal -->
-    <TextView
-        android:id="@+id/tv_maitre_donjon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dungeon_master"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/room_table"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- TableLayout pour les boutons -->
     <TableLayout
         android:id="@+id/room_table"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/tl_stats"
         android:gravity="center"
+        android:maxHeight="100dp"
+        android:padding="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/tl_stats"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_maitre_donjon">
-    </TableLayout>
+        app:layout_constraintTop_toBottomOf="@+id/layout_level"></TableLayout>
 
     <!-- TableLayout pour les statistiques -->
     <TableLayout
         android:id="@+id/tl_stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/layout_result"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,12 +37,13 @@
 
         <!-- Première ligne -->
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="@string/unexplored_rooms"
-                android:textSize="16sp"
-                android:padding="8dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_unexplored_rooms_value"
@@ -66,12 +56,13 @@
 
         <!-- Deuxième ligne -->
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="@string/power"
-                android:textSize="16sp"
-                android:padding="8dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_power_value"
@@ -84,12 +75,13 @@
 
         <!-- Troisième ligne -->
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="@string/health_points"
-                android:textSize="16sp"
-                android:padding="8dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_health_value"
@@ -103,19 +95,19 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/layout_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/next_level_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tl_stats">
 
         <TextView
-            android:id="@+id/tv_battle_result_title"
+            android:id="@+id/tv_result_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/battle_result"
@@ -123,12 +115,52 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_battle_result"
+            android:id="@+id/tv_result_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/waiting"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/room_table"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/level"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_level_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="1"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/next_level_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_to_next_level"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_result" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

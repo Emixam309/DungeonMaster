@@ -54,4 +54,37 @@ public class Battle {
         double randEnnemy = random.nextDouble();
         return player.getPower() * randPlayer - enemy.getPower() * randEnnemy;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(Enemy enemy) {
+        this.enemy = enemy;
+    }
+
+    @Override
+    public String toString() {
+        return "Battle{" +
+                "player=" + player +
+                ", room=" + room +
+                ", enemy=" + enemy +
+                '}';
+    }
 }

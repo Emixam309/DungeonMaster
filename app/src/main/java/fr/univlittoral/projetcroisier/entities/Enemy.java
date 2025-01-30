@@ -5,7 +5,7 @@ public class Enemy extends Entity {
 
     public Enemy(double difficulty) {
         super("");
-        this.power = setRandomPower(difficulty, 50, 150);
+        this.power = setRandomPower(difficulty, 1, 150);
         this.name = setRandomNameFromPower(this.power);
     }
 
@@ -29,7 +29,7 @@ public class Enemy extends Entity {
             String[] mediumPowerNames = {"Cockatrice", "Soldier", "Skeleton", "Swordsman", "Zombie", "Skeleton", "Rogue", "Fanatic", "Ghost", "Puppet", "Scorpion", "Snake", "Spider", "Mimic", "Mage"};
             return mediumPowerNames[(int) (Math.random() * mediumPowerNames.length)];
         } else if (power < 300) {
-            String[] highPowerNames = {"Assassin","Captain", "Vampire", "Werewolf", "Ogre", "Orc", "Sahuagin", "Chimera", "Demon", "Gargoyle", "Garuda", "Gazer", "General", "Lamia"};
+            String[] highPowerNames = {"Assassin", "Captain", "Vampire", "Werewolf", "Ogre", "Orc", "Sahuagin", "Chimera", "Demon", "Gargoyle", "Garuda", "Gazer", "General", "Lamia"};
             return highPowerNames[(int) (Math.random() * highPowerNames.length)];
         } else if (power < 400) {
             String[] veryHighPowerNames = {"Behemoth", "Cerberus", "Dragon", "Minotaur", "Darklord", "Irongiant", "Vampire", "Succubus"};

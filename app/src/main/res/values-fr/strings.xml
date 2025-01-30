@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Maître du Donjon</string>
     <string name="unexplored_rooms">Pièces non explorées</string>
     <string name="power">Puissance</string>
     <string name="health_points">Points de vie</string>
     <string name="battle_result">Résultat du Combat</string>
     <string name="waiting">En attente ...</string>
     <string name="dungeon">Donjon</string>
-    <string name="dungeon_master">Maitre du Donjon</string>
     <string name="player">Joueur</string>
-    <string name="enemy">Ennemie</string>
+    <string name="enemy">Ennemi</string>
     <string name="attack">Attaquer</string>
     <string name="flee">Fuir</string>
     <string name="victory">Victoire</string>
@@ -24,4 +24,24 @@
     <string name="no">Non</string>
     <string name="health_potion_description">Elle restitue entre 1 et 3 points de vie. Voulez vous l\'utiliser ?</string>
     <string name="power_charm_description">Il augmente votre puissance de 5 à 10 points. Voulez vous l\'utiliser ?</string>
+    <string name="restart_game">Redémarrer la partie</string>
+    <string name="level">Niveau</string>
+    <string name="battle_title">Combat</string>
+    <string name="exploration_result">Résultat de l\'éxploration</string>
+    <string name="item_left">Objet laissé dans la pièce</string>
+    <string name="item_used">Objet utilisé</string>
+    <string name="go_to_next_level">Aller au niveau suivant</string>
+    <string name="validate">Valider</string>
+    <string name="configuration_title">Configuration</string>
+    <string name="player_stats">Statistique du joueur</string>
+    <string name="dungeon_gen">Génération du donjon</string>
+    <string name="level_size">Taille d\'un niveau</string>
+    <string name="difficulty_increase_multiplier">Multiplicateur d\'augmentation de la difficulté</string>
+    <string name="player_name">Nom du Joueur</string>
+    <string name="difficulty">Difficulté</string>
+    <string name="game_config">Configuration de la partie</string>
+    <string name="difficulty_easy">Facile</string>
+    <string name="difficulty_medium">Moyen</string>
+    <string name="difficulty_hard">Difficile</string>
+    <string name="difficulty_custom">Personnalisé</string>
 </resources>

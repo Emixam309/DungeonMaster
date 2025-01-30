@@ -1,9 +1,13 @@
 package fr.univlittoral.projetcroisier.world;
 
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+
 import fr.univlittoral.projetcroisier.entities.Enemy;
 import fr.univlittoral.projetcroisier.entities.Entity;
 
-public class Room {
+public class Room implements Serializable {
     private Entity entity;
     private boolean visited;
 

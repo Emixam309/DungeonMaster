@@ -4,40 +4,44 @@ import fr.univlittoral.projetcroisier.entities.Enemy;
 import fr.univlittoral.projetcroisier.entities.Item;
 import fr.univlittoral.projetcroisier.enums.ItemType;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Random;
 
-public class Dungeon {
+public class Dungeon implements Serializable {
     private Room[][] rooms;
-    private double difficulty;
+    private double difficultyMultiplier;
+    private int rows;
+    private int columns;
 
-    public Dungeon(double difficulty) {
-        int rows = 3;
-        int cols = 3;
-        this.difficulty = difficulty;
-        rooms = new Room[rows][cols];
+    public Dungeon(double difficultyMultiplier, int rows, int columns) {
+        this.difficultyMultiplier = difficultyMultiplier;
+        rooms = new Room[columns][rows];
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 rooms[i][j] = new Room(null); // Initialize rooms without enemies
             }
         }
 
         placeRandomItems();
-        placeRandomEnemies(difficulty);
+        placeRandomEnemies(difficultyMultiplier);
     }
 
     private void placeRandomItems() {
         Random random = new Random();
         int itemCount = 0;
 
-        while (itemCount < 2) {
-            int row = random.nextInt(rooms.length);
-            int col = random.nextInt(rooms[0].length);
+        if (rooms.length > 0 && rooms[0].length > 0) {
+            while (itemCount < 2) {
+                int row = random.nextInt(rooms.length);
+                int col = random.nextInt(rooms[0].length);
 
-            if (rooms[row][col].getEntity() == null) {
-                ItemType itemType = random.nextBoolean() ? ItemType.HEALTH_POTION : ItemType.POWER_CHARM;
-                rooms[row][col].setEntity(new Item(itemType));
-                itemCount++;
+                if (rooms[row][col].getEntity() == null) {
+                    ItemType itemType = random.nextBoolean() ? ItemType.HEALTH_POTION : ItemType.POWER_CHARM;
+                    rooms[row][col].setEntity(new Item(itemType));
+                    itemCount++;
+                }
             }
         }
     }
@@ -60,12 +64,12 @@ public class Dungeon {
         this.rooms = rooms;
     }
 
-    public double getDifficulty() {
-        return difficulty;
+    public double getDifficultyMultiplier() {
+        return difficultyMultiplier;
     }
 
-    public void setDifficulty(double difficulty) {
-        this.difficulty = difficulty;
+    public void setDifficultyMultiplier(double difficultyMultiplier) {
+        this.difficultyMultiplier = difficultyMultiplier;
     }
 
     public Room getRoom(int i, int j) {
@@ -74,6 +78,14 @@ public class Dungeon {
 
     public int getNumberOfRooms() {
         return rooms.length * rooms[0].length;
+    }
+
+    public int getRows() {
+        return rooms[0].length;
+    }
+
+    public int getColumns() {
+        return rooms.length;
     }
 
     public int getNumberOfUnvisitedRooms() {
@@ -86,5 +98,13 @@ public class Dungeon {
             }
         }
         return count;
+    }
+
+    @Override
+    public String toString() {
+        return "Dungeon{" +
+                "rooms=" + Arrays.toString(rooms) +
+                ", difficulty=" + difficultyMultiplier +
+                '}';
     }
 }
