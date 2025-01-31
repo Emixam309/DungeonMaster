@@ -10,16 +10,18 @@ import java.util.Random;
 
 public class Dungeon implements Serializable {
     private Room[][] rooms;
-    private double difficultyMultiplier;
-    private int rows;
-    private int columns;
+    private final int rows;
+    private final int columns;
+    private int level;
 
-    public Dungeon(double difficultyMultiplier, int rows, int columns) {
-        this.difficultyMultiplier = difficultyMultiplier;
-        rooms = new Room[columns][rows];
+    public Dungeon(double difficultyMultiplier, int rows, int columns, int level) {
+        rooms = new Room[rows][columns];
+        this.rows = rows;
+        this.columns = columns;
+        this.level = level;
 
-        for (int i = 0; i < columns; i++) {
-            for (int j = 0; j < rows; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 rooms[i][j] = new Room(null); // Initialize rooms without enemies
             }
         }
@@ -32,10 +34,10 @@ public class Dungeon implements Serializable {
         Random random = new Random();
         int itemCount = 0;
 
-        if (rooms.length > 0 && rooms[0].length > 0) {
+        if (rows > 0 && columns > 0) {
             while (itemCount < 2) {
-                int row = random.nextInt(rooms.length);
-                int col = random.nextInt(rooms[0].length);
+                int row = random.nextInt(rows);
+                int col = random.nextInt(columns);
 
                 if (rooms[row][col].getEntity() == null) {
                     ItemType itemType = random.nextBoolean() ? ItemType.HEALTH_POTION : ItemType.POWER_CHARM;
@@ -50,7 +52,7 @@ public class Dungeon implements Serializable {
         for (Room[] room : rooms) {
             for (Room value : room) {
                 if (value.getEntity() == null) {
-                    value.setEntity(new Enemy(difficulty));
+                    value.setEntity(new Enemy(difficulty, level));
                 }
             }
         }
@@ -64,14 +66,6 @@ public class Dungeon implements Serializable {
         this.rooms = rooms;
     }
 
-    public double getDifficultyMultiplier() {
-        return difficultyMultiplier;
-    }
-
-    public void setDifficultyMultiplier(double difficultyMultiplier) {
-        this.difficultyMultiplier = difficultyMultiplier;
-    }
-
     public Room getRoom(int i, int j) {
         return rooms[i][j];
     }
@@ -81,11 +75,11 @@ public class Dungeon implements Serializable {
     }
 
     public int getRows() {
-        return rooms[0].length;
+        return rows;
     }
 
     public int getColumns() {
-        return rooms.length;
+        return columns;
     }
 
     public int getNumberOfUnvisitedRooms() {
@@ -104,7 +98,8 @@ public class Dungeon implements Serializable {
     public String toString() {
         return "Dungeon{" +
                 "rooms=" + Arrays.toString(rooms) +
-                ", difficulty=" + difficultyMultiplier +
+                ", rows=" + rows +
+                ", columns=" + columns +
                 '}';
     }
 }

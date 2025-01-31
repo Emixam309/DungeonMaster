@@ -9,15 +9,18 @@ import fr.univlittoral.projetcroisier.entities.Player;
 import fr.univlittoral.projetcroisier.world.Room;
 
 public class Battle {
+    private Game game;
     private Player player;
     private Room room;
     private Enemy enemy;
     private Random random;
 
-    public Battle(Player player, Room room) {
-        this.player = player;
+    public Battle(Game game, Room room) {
+        this.game = game;
+        this.player = game.getPlayer();
         this.room = room;
         this.enemy = (Enemy) room.getEntity();
+
         this.random = new Random();
     }
 
@@ -33,7 +36,7 @@ public class Battle {
     }
 
     public void win() {
-        player.setScore(player.getScore() + 1);
+        calculateScore();
         player.setPower(player.getPower() + 10);
         room.setEntity(null);
         Log.d("Battle", "Player: " + player);
@@ -55,12 +58,10 @@ public class Battle {
         return player.getPower() * randPlayer - enemy.getPower() * randEnnemy;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void calculateScore() {
+        int score = (int) ((100 + player.getHealth()) * (double) enemy.getPower() / player.getPower() * game.getLevel() * game.getDifficultyMultiplier());
+        Log.d("Battle", "Score increased by: " + score);
+        game.increaseScore(score);
     }
 
     public Room getRoom() {
@@ -69,14 +70,6 @@ public class Battle {
 
     public void setRoom(Room room) {
         this.room = room;
-    }
-
-    public Enemy getEnemy() {
-        return enemy;
-    }
-
-    public void setEnemy(Enemy enemy) {
-        this.enemy = enemy;
     }
 
     @Override

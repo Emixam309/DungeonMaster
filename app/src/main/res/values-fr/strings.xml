@@ -14,8 +14,8 @@
     <string name="victory">Victoire</string>
     <string name="defeat">Défaite</string>
     <string name="fled">A fui</string>
-    <string name="game_over">Jeu Terminé</string>
-    <string name="game_win">Vous avez gagné la partie</string>
+    <string name="level_clear">Niveau terminé</string>
+    <string name="level_win">Vous avez terminé ce niveau</string>
     <string name="game_lose">Vous avez perdu la partie</string>
     <string name="empty_room">Cette pièce est vide</string>
     <string name="health_potion_found">Potion de soin trouvée !</string>
@@ -36,7 +36,7 @@
     <string name="player_stats">Statistique du joueur</string>
     <string name="dungeon_gen">Génération du donjon</string>
     <string name="level_size">Taille d\'un niveau</string>
-    <string name="difficulty_increase_multiplier">Multiplicateur d\'augmentation de la difficulté</string>
+    <string name="difficulty_increase_multiplier">Multiplicateur de la difficulté</string>
     <string name="player_name">Nom du Joueur</string>
     <string name="difficulty">Difficulté</string>
     <string name="game_config">Configuration de la partie</string>
@@ -44,4 +44,6 @@
     <string name="difficulty_medium">Moyen</string>
     <string name="difficulty_hard">Difficile</string>
     <string name="difficulty_custom">Personnalisé</string>
+    <string name="game_over">Partie Terminée</string>
+    <string name="empty_fields_error">Certains champs sont vides</string>
 </resources>

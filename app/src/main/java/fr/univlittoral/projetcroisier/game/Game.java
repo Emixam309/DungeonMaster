@@ -1,10 +1,14 @@
 package fr.univlittoral.projetcroisier.game;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
+import fr.univlittoral.projetcroisier.entities.Enemy;
 import fr.univlittoral.projetcroisier.entities.Player;
 import fr.univlittoral.projetcroisier.enums.Difficulty;
 import fr.univlittoral.projetcroisier.world.Dungeon;
+import fr.univlittoral.projetcroisier.world.Room;
 
 public class Game {
     private Player player;
@@ -17,7 +21,7 @@ public class Game {
     public Game(Player player, Difficulty difficulty, double difficultyMultiplier, int rows, int columns, int level, int score) {
         this.player = player;
         this.difficulty = difficulty;
-        this.dungeon = new Dungeon(difficultyMultiplier, rows, columns);
+        this.dungeon = new Dungeon(difficultyMultiplier, rows, columns, level);
         this.difficultyMultiplier = difficultyMultiplier;
         this.level = level;
         this.score = score;
@@ -71,6 +75,10 @@ public class Game {
         this.score = score;
     }
 
+    public void increaseScore(int score) {
+        this.score += score;
+    }
+
     public int getLevel() {
         return level;
     }
@@ -84,6 +92,7 @@ public class Game {
         return "Game{" +
                 "player=" + player +
                 ", difficulty=" + difficulty +
+                ", difficultyMultiplier=" + difficultyMultiplier +
                 ", dungeon=" + dungeon +
                 ", score=" + score +
                 ", level=" + level +

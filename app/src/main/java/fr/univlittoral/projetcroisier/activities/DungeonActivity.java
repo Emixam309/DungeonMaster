@@ -111,7 +111,7 @@ public class DungeonActivity extends AppCompatActivity {
                             result.getData().getIntExtra("room_y", 0)
                     );
                     if (room.getEntity() != null && room.getEntity() instanceof Enemy) {
-                        Battle battle = new Battle(player, room);
+                        Battle battle = new Battle(game, room);
                         room.setVisited(true);
                         if (result.getResultCode() == RESULT_OK) {
                             boolean isWon = battle.attack();
@@ -119,7 +119,9 @@ public class DungeonActivity extends AppCompatActivity {
                             resultValue.setText(isWon ? R.string.victory : R.string.defeat);
                             playerPower.setText(String.valueOf(player.getPower()));
                             roomUnexplored.setText(String.valueOf(dungeon.getNumberOfUnvisitedRooms()));
+
                             Log.d("DungeonActivity", "Result from CombatActivity: " + isWon);
+                            Log.d("DungeonActivity", "Score: " + game.getScore());
                             checkEndDungeon();
                         } else if (result.getResultCode() == RESULT_CANCELED) {
                             battle.escape();
@@ -304,8 +306,8 @@ public class DungeonActivity extends AppCompatActivity {
         if (areAllRoomsEmpty()) {
             disableAllRoomButtons();
             // Display game over message
-            resultTitle.setText(R.string.game_over);
-            resultValue.setText(R.string.game_win);
+            resultTitle.setText(R.string.level_clear);
+            resultValue.setText(R.string.level_win);
             // display next level button
             nextLevelButton.setVisibility(Button.VISIBLE);
         }

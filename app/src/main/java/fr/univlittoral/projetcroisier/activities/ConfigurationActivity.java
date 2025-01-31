@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -121,8 +122,6 @@ public class ConfigurationActivity extends AppCompatActivity {
         });
 
         validateButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, DungeonActivity.class);
-            Player player = new Player(playerName.getText().toString());
             // Get the selected difficulty and map it to the enum
             String selectedDifficulty = (String) difficulty.getSelectedItem();
 
@@ -134,6 +133,13 @@ public class ConfigurationActivity extends AppCompatActivity {
             } else if (selectedDifficulty.equals(getString(R.string.difficulty_custom))) {
                 difficultyEnum = Difficulty.CUSTOM;
             }
+            if (checkFieldsForEmptyValues(difficultyEnum)) {
+                Toast.makeText(this, R.string.empty_fields_error, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(this, DungeonActivity.class);
+            Player player = new Player(playerName.getText().toString());
+
             intent.putExtra(DungeonIntents.DIFFICULTY, difficultyEnum);
             if (difficultyEnum == Difficulty.CUSTOM) {
                 intent.putExtra(DungeonIntents.ROWS, Integer.parseInt(dungeonRows.getSelectedItem().toString()));
@@ -163,5 +169,12 @@ public class ConfigurationActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+    }
+
+    private boolean checkFieldsForEmptyValues(Difficulty difficulty) {
+        String name = playerName.getText().toString();
+        String health = playerHealth.getText().toString();
+        String power = playerPower.getText().toString();
+        return name.isEmpty() || (difficulty == Difficulty.CUSTOM && (health.isEmpty() || power.isEmpty()));
     }
 }

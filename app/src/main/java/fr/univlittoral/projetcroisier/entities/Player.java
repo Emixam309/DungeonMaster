@@ -8,13 +8,11 @@ public class Player implements Serializable {
     private String name;
     private int health;
     private int power;
-    private int score;
 
     public Player(String name, int health, int power) {
         this.name = name;
         this.health = health;
         this.power = power;
-        this.score = 0;
     }
 
     public Player(String name) {
@@ -45,27 +43,16 @@ public class Player implements Serializable {
         this.power = power;
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public void initializeAttributes(Difficulty difficulty, int customHealth, int customPower) {
         switch (difficulty) {
             case EASY:
                 setHealth(15);
-                setPower(150);
-                break;
-            case MEDIUM:
-                setHealth(10);
                 setPower(100);
                 break;
+            case MEDIUM:
             case HARD:
                 setHealth(10);
-                setPower(50);
+                setPower(100);
                 break;
             case CUSTOM:
                 setHealth(customHealth);
@@ -80,7 +67,6 @@ public class Player implements Serializable {
                 "name='" + name + '\'' +
                 ", health=" + health +
                 ", power=" + power +
-                ", score=" + score +
                 '}';
     }
 }
