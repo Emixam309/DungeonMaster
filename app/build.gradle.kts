@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "fr.univlittoral.projetcroisier"
+    namespace = "fr.croisier.dungeonmaster"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "fr.univlittoral.projetcroisier"
+        applicationId = "fr.croisier.dungeonmaster"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

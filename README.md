@@ -18,13 +18,13 @@ Le jeu est développé en Java pour Android.
 
 Le projet est organisé en plusieurs packages :
 
-- [**activities**](app/src/main/java/fr/univlittoral/projetcroisier/activities) : Contient les activités Android pour l'interface utilisateur, telles que `BattleActivity`, `ConfigurationActivity`, `DungeonActivity`, `ScoresActivity`, et `ScoresAdapter`.
-- [**entities**](app/src/main/java/fr/univlittoral/projetcroisier/entities) : Contient les classes représentant les entités du jeu, telles que `Enemy`, `Entity`, `Item`, et `Player`.
-- [**enums**](app/src/main/java/fr/univlittoral/projetcroisier/enums) : Contient les énumérations utilisées dans le jeu, telles que `Difficulty` et `ItemType`.
-- [**game**](app/src/main/java/fr/univlittoral/projetcroisier/game) : Contient les classes gérant la logique du jeu, telles que `Battle`, `Game`, et `Score`.
-- [**intents**](app/src/main/java/fr/univlittoral/projetcroisier/intents) : Contient les constantes pour les extras des intents utilisés dans les activités.
-- [**viewmodels**](app/src/main/java/fr/univlittoral/projetcroisier/viewmodels) : Contient les ViewModels pour gérer l'état des données de l'application.
-- [**world**](app/src/main/java/fr/univlittoral/projetcroisier/world) : Contient les classes représentant le monde du jeu, telles que `Dungeon` et `Room`.
+- [**activities**](app/src/main/java/fr/croisier/dungeonmaster/activities) : Contient les activités Android pour l'interface utilisateur, telles que `BattleActivity`, `ConfigurationActivity`, `DungeonActivity`, `ScoresActivity`, et `ScoresAdapter`.
+- [**entities**](app/src/main/java/fr/croisier/dungeonmaster/entities) : Contient les classes représentant les entités du jeu, telles que `Enemy`, `Entity`, `Item`, et `Player`.
+- [**enums**](app/src/main/java/fr/croisier/dungeonmaster/enums) : Contient les énumérations utilisées dans le jeu, telles que `Difficulty` et `ItemType`.
+- [**game**](app/src/main/java/fr/croisier/dungeonmaster/game) : Contient les classes gérant la logique du jeu, telles que `Battle`, `Game`, et `Score`.
+- [**intents**](app/src/main/java/fr/croisier/dungeonmaster/intents) : Contient les constantes pour les extras des intents utilisés dans les activités.
+- [**viewmodels**](app/src/main/java/fr/croisier/dungeonmaster/viewmodels) : Contient les ViewModels pour gérer l'état des données de l'application.
+- [**world**](app/src/main/java/fr/croisier/dungeonmaster/world) : Contient les classes représentant le monde du jeu, telles que `Dungeon` et `Room`.
 
 ### Diagramme de Classe
 
@@ -39,4 +39,4 @@ Le projet est organisé en plusieurs packages :
 ## Documentation
 
 - [Javadoc](doc/index.html)
-- [Structure du projet](app/src/main/java/fr/univlittoral/projetcroisier/readme.md)
+- [Structure du projet](app/src/main/java/fr/croisier/dungeonmaster/readme.md)
