@@ -34,3 +34,7 @@ Le projet est organisé en plusieurs packages :
 - [**world**](world) : Contient les classes représentant le monde du jeu :
   - [`Dungeon`](world/Dungeon.java) : Représente un donjon dans le jeu.
   - [`Room`](world/Room.java) : Représente une pièce dans le donjon.
+
+### Diagramme de Classe
+
+![Diagramme de Classe](/doc/project-structure.png)

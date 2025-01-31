@@ -26,6 +26,10 @@ Le projet est organisé en plusieurs packages :
 - [**viewmodels**](app/src/main/java/fr/univlittoral/projetcroisier/viewmodels) : Contient les ViewModels pour gérer l'état des données de l'application.
 - [**world**](app/src/main/java/fr/univlittoral/projetcroisier/world) : Contient les classes représentant le monde du jeu, telles que `Dungeon` et `Room`.
 
+### Diagramme de Classe
+
+![Diagramme de Classe](doc/project-structure.png)
+
 ## Installation et Exécution
 
 1. Clonez le dépôt du projet.
