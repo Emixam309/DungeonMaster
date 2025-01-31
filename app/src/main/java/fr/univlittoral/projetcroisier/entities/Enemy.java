@@ -1,26 +1,60 @@
 package fr.univlittoral.projetcroisier.entities;
 
+/**
+ * Class representing an enemy in the game.
+ */
 public class Enemy extends Entity {
     private int power;
 
+    /**
+     * Constructor for the Enemy class.
+     *
+     * @param difficulty The difficulty multiplier.
+     * @param level      The level of the enemy.
+     */
     public Enemy(double difficulty, int level) {
         super("");
         this.power = setRandomPower(1, 150, difficulty, level);
         this.name = setRandomNameFromPower(this.power);
     }
 
+    /**
+     * Gets the power of the enemy.
+     *
+     * @return The power of the enemy.
+     */
     public int getPower() {
         return power;
     }
 
+    /**
+     * Sets the power of the enemy.
+     *
+     * @param power The new power of the enemy.
+     */
     public void setPower(int power) {
         this.power = power;
     }
 
+    /**
+     * Sets a random power for the enemy based on the difficulty and level.
+     *
+     * @param min        The minimum power.
+     * @param max        The maximum power.
+     * @param difficulty The difficulty multiplier.
+     * @param level      The level of the enemy.
+     * @return The calculated power.
+     */
     private int setRandomPower(int min, int max, double difficulty, int level) {
         return (int) ((Math.random() * (max - min) + min) + (((level - 1) * 140) * (difficulty / 2) * Math.exp(0.1 * (level - 1))));
     }
 
+    /**
+     * Sets a random name for the enemy based on its power.
+     *
+     * @param power The power of the enemy.
+     * @return The name of the enemy.
+     */
     private String setRandomNameFromPower(int power) {
         if (power < 100) {
             String[] lowPowerNames = {"Slime", "Rat", "Bat", "Hornet", "Imp", "Jellyfish", "Plant", "Willowisp", "Spider", "Snake", "Scorpion"};

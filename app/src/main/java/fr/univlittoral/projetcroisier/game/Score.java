@@ -1,7 +1,6 @@
 package fr.univlittoral.projetcroisier.game;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +15,9 @@ import java.util.List;
 
 import fr.univlittoral.projetcroisier.enums.Difficulty;
 
+/**
+ * Represents a score entry in the game.
+ */
 public class Score {
     private static final String FILENAME = "dungeon_master_scores.txt";
     private static final String SEPARATOR = ";";
@@ -26,6 +28,15 @@ public class Score {
     private final int level;
     private final Difficulty difficulty;
 
+    /**
+     * Constructs a Score instance.
+     *
+     * @param playerName the player's name
+     * @param dateTime the date and time of the score
+     * @param score the score value
+     * @param level the level achieved
+     * @param difficulty the difficulty level
+     */
     public Score(String playerName, String dateTime, int score, int level, Difficulty difficulty) {
         this.playerName = playerName;
         this.dateTime = dateTime;
@@ -34,27 +45,58 @@ public class Score {
         this.difficulty = difficulty;
     }
 
+    /**
+     * Gets the player's name.
+     *
+     * @return the player's name
+     */
     public String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Gets the date and time of the score.
+     *
+     * @return the date and time of the score
+     */
     public String getDateTime() {
         return dateTime;
     }
 
+    /**
+     * Gets the score value.
+     *
+     * @return the score value
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Gets the level achieved.
+     *
+     * @return the level achieved
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Gets the difficulty level.
+     *
+     * @return the difficulty level
+     */
     public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public static void saveScoreToCSV(Context context, Game game) {
+    /**
+     * Saves the current game score to a file.
+     *
+     * @param context the context
+     * @param game the game instance
+     */
+    public static void saveScoreToFile(Context context, Game game) {
         File file = new File(context.getFilesDir(), FILENAME);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             long timestamp = System.currentTimeMillis();
@@ -71,7 +113,13 @@ public class Score {
         }
     }
 
-    public static List<Score> readScoresFromCSV(Context context) {
+    /**
+     * Reads scores from a file.
+     *
+     * @param context the context
+     * @return a list of scores
+     */
+    public static List<Score> readScoresFromFile(Context context) {
         File file = new File(context.getFilesDir(), FILENAME);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -86,7 +134,7 @@ public class Score {
                 String difficulty = details[3];
                 int level = Integer.parseInt(details[4]);
 
-               scoreList.add(new Score(playerName, dateTime, score, level, Difficulty.valueOf(difficulty)));
+                scoreList.add(new Score(playerName, dateTime, score, level, Difficulty.valueOf(difficulty)));
             }
             return scoreList;
         } catch (IOException e) {

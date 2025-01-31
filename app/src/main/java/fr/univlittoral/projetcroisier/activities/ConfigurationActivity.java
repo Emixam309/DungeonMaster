@@ -26,6 +26,9 @@ import fr.univlittoral.projetcroisier.entities.Player;
 import fr.univlittoral.projetcroisier.enums.Difficulty;
 import fr.univlittoral.projetcroisier.intents.DungeonIntents;
 
+/**
+ * Activity for configuring the game settings before starting the dungeon exploration.
+ */
 public class ConfigurationActivity extends AppCompatActivity {
     TextView playerName;
     Spinner difficulty;
@@ -49,10 +52,11 @@ public class ConfigurationActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize UI elements
         playerName = findViewById(R.id.player_name_input);
         difficulty = findViewById(R.id.difficulty_spinner);
         customDifficultyLayout = findViewById(R.id.custom_difficulty_layout);
-
         playerHealth = findViewById(R.id.player_health_input);
         playerPower = findViewById(R.id.player_power_input);
         dungeonRows = findViewById(R.id.dungeon_rows_spinner);
@@ -61,6 +65,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         difficultyMultValue = findViewById(R.id.difficulty_mult_value);
         validateButton = findViewById(R.id.validate_button);
 
+        // Set up difficulty levels
         String[] difficultyLevels = {
                 getString(R.string.difficulty_easy),
                 getString(R.string.difficulty_medium),
@@ -91,7 +96,7 @@ public class ConfigurationActivity extends AppCompatActivity {
             }
         });
 
-        //Configure the dungeon rows and columns
+        // Configure the dungeon rows and columns
         String[] numbers = {"3", "4", "5"};
         ArrayAdapter<String> rowsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, numbers);
         ArrayAdapter<String> columnsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, numbers);
@@ -102,7 +107,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         dungeonColumns.setAdapter(columnsAdapter);
         dungeonColumns.setSelection(1); // set default value to 4
 
-        // Configure the SeekBar
+        // Configure the SeekBar for difficulty multiplier
         difficultyMultiplier.setMax(20); // Range from 0 to 2 (0.1 steps)
         difficultyMultiplier.setProgress(10); // Default value 1.0
         difficultyMultValue.setText(String.valueOf(difficultyMultiplier.getProgress() / 10.0));
@@ -124,6 +129,7 @@ public class ConfigurationActivity extends AppCompatActivity {
             }
         });
 
+        // Set up the validate button click listener
         validateButton.setOnClickListener(v -> {
             // Get the selected difficulty and map it to the enum
             String selectedDifficulty = (String) difficulty.getSelectedItem();
@@ -191,11 +197,16 @@ public class ConfigurationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /// Check if the fields are empty or equal to 0
+    /**
+     * Checks if the fields are empty or equal to 0.
+     *
+     * @param difficulty The selected difficulty level.
+     * @return True if any required field is empty or invalid, false otherwise.
+     */
     private boolean checkFieldsForEmptyValues(Difficulty difficulty) {
         String name = playerName.getText().toString();
         String health = playerHealth.getText().toString();
         String power = playerPower.getText().toString();
-        return name.isBlank() || (difficulty == Difficulty.CUSTOM && health.isBlank() || Integer.parseInt(health) == 0) || (difficulty == Difficulty.CUSTOM && power.isBlank() || Integer.parseInt(power) == 0);
+        return name.isBlank() || (difficulty == Difficulty.CUSTOM && (health.isBlank() || Integer.parseInt(health) == 0)) || (difficulty == Difficulty.CUSTOM && (power.isBlank() || Integer.parseInt(power) == 0));
     }
 }

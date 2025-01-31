@@ -38,6 +38,9 @@ import fr.univlittoral.projetcroisier.viewmodels.RoomViewModel;
 import fr.univlittoral.projetcroisier.world.Dungeon;
 import fr.univlittoral.projetcroisier.world.Room;
 
+/**
+ * Activity representing the dungeon exploration in the game.
+ */
 public class DungeonActivity extends AppCompatActivity {
     private Game game;
     private Player player;
@@ -65,14 +68,17 @@ public class DungeonActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Check if there is a saved instance state to restore
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         } else if (getIntent().getExtras() == null) {
+            // If no extras are provided, redirect to ConfigurationActivity
             Intent intent = new Intent(this, ConfigurationActivity.class);
             startActivity(intent);
             finish();
             return;
         } else {
+            // Retrieve player and game details from the intent
             String playerName = getIntent().getStringExtra(DungeonIntents.PLAYER_NAME);
             int playerHealth = getIntent().getIntExtra(DungeonIntents.PLAYER_HEALTH, 10);
             int playerPower = getIntent().getIntExtra(DungeonIntents.PLAYER_POWER, 100);
@@ -104,6 +110,7 @@ public class DungeonActivity extends AppCompatActivity {
 
         checkEndDungeon();
 
+        // Register the activity result launcher for combat activity
         combatActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -143,6 +150,7 @@ public class DungeonActivity extends AppCompatActivity {
                 }
         );
 
+        // Create the dungeon layout with buttons for each room
         for (int i = 0; i < dungeon.getRooms().length; i++) {
             TableRow tableRow = new TableRow(this);
             tableRow.setGravity(1);
@@ -187,6 +195,7 @@ public class DungeonActivity extends AppCompatActivity {
             tableLayout.addView(tableRow);
         }
 
+        // Set click listener for the next level button
         nextLevelButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, DungeonActivity.class);
             Log.d("DungeonActivity", "Player: " + player);
@@ -207,6 +216,7 @@ public class DungeonActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        // Save the current state of the game
         outState.putString(DungeonIntents.PLAYER_NAME, player.getName());
         outState.putInt(DungeonIntents.PLAYER_HEALTH, player.getHealth());
         outState.putInt(DungeonIntents.PLAYER_POWER, player.getPower());
@@ -219,16 +229,17 @@ public class DungeonActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        // Restore the saved state of the game
         if (savedInstanceState != null) {
             String playerName = savedInstanceState.getString(DungeonIntents.PLAYER_NAME);
             int playerHealth = savedInstanceState.getInt(DungeonIntents.PLAYER_HEALTH);
             int playerPower = savedInstanceState.getInt(DungeonIntents.PLAYER_POWER);
             Difficulty difficulty = Difficulty.values()[savedInstanceState.getInt(DungeonIntents.DIFFICULTY)];
-            Dungeon acutalDungeon = (Dungeon) savedInstanceState.getSerializable(DungeonIntents.DUNGEON);
+            Dungeon actualDungeon = (Dungeon) savedInstanceState.getSerializable(DungeonIntents.DUNGEON);
             int level = savedInstanceState.getInt(DungeonIntents.LEVEL);
             int score = savedInstanceState.getInt(DungeonIntents.SCORE);
             player = new Player(playerName, playerHealth, playerPower);
-            game = new Game(player, difficulty, acutalDungeon, level, score);
+            game = new Game(player, difficulty, actualDungeon, level, score);
         }
     }
 
@@ -241,6 +252,7 @@ public class DungeonActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle menu item selections
         if (item.getItemId() == R.id.action_restart_game) {
             finish();
             return true;
@@ -252,6 +264,12 @@ public class DungeonActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Updates the icon of the room button based on the room's state.
+     *
+     * @param button The button representing the room.
+     * @param room   The room to update the icon for.
+     */
     private void updateRoomButtonIcon(ImageButton button, Room room) {
         if (!room.isVisited()) {
             button.setImageResource(R.drawable.circle);
@@ -262,6 +280,12 @@ public class DungeonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Displays a dialog when an item is found in a room.
+     *
+     * @param item  The item found.
+     * @param room  The room where the item is found.
+     */
     private void showItemDialog(Item item, Room room) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -300,6 +324,9 @@ public class DungeonActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Disables all room buttons, preventing further interaction.
+     */
     private void disableAllRoomButtons() {
         for (int i = 0; i < tableLayout.getChildCount(); i++) {
             TableRow row = (TableRow) tableLayout.getChildAt(i);
@@ -309,17 +336,25 @@ public class DungeonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if the dungeon level is completed and updates the UI accordingly.
+     */
     private void checkEndDungeon() {
         if (areAllRoomsEmpty()) {
             disableAllRoomButtons();
-            // Display game over message
+            // Display level clear message
             resultTitle.setText(R.string.level_clear);
             resultValue.setText(R.string.level_win);
-            // display next level button
+            // Display next level button
             nextLevelButton.setVisibility(Button.VISIBLE);
         }
     }
 
+    /**
+     * Checks if all rooms in the dungeon are empty.
+     *
+     * @return True if all rooms are empty, false otherwise.
+     */
     private boolean areAllRoomsEmpty() {
         for (Room[] row : dungeon.getRooms()) {
             for (Room room : row) {
@@ -331,8 +366,11 @@ public class DungeonActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Saves the current game score to a file.
+     */
     private void saveScore() {
-        Score.saveScoreToCSV(this, game);
+        Score.saveScoreToFile(this, game);
         Toast.makeText(this, R.string.score_saved, Toast.LENGTH_SHORT).show();
     }
 }

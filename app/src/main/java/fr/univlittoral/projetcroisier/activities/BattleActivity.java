@@ -16,6 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 import fr.univlittoral.projetcroisier.R;
 import fr.univlittoral.projetcroisier.intents.BattleIntents;
 
+/**
+ * Activity representing the battle between the player and an enemy.
+ */
 public class BattleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,44 +32,52 @@ public class BattleActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize UI elements
         TextView playerNameTextView = findViewById(R.id.tv_player_name_battle);
         TextView playerHealthTextView = findViewById(R.id.tv_player_health_battle);
         TextView playerPowerTextView = findViewById(R.id.tv_player_power_battle);
-        TextView ennemyNameTextView = findViewById(R.id.tv_enemy_name);
-        TextView ennemyPowerTextView = findViewById(R.id.tv_ennemy_power);
+        TextView enemyNameTextView = findViewById(R.id.tv_enemy_name);
+        TextView enemyPowerTextView = findViewById(R.id.tv_ennemy_power);
         ImageView enemyImageView = findViewById(R.id.enemy_image_view);
 
-        String player_name = getIntent().getStringExtra(BattleIntents.PLAYER_NAME);
-        playerNameTextView.setText(player_name);
-        int player_health = getIntent().getIntExtra(BattleIntents.PLAYER_HEALTH, 0);
-        playerHealthTextView.setText(String.valueOf(player_health));
-        int player_power = getIntent().getIntExtra(BattleIntents.PLAYER_POWER, 0);
-        playerPowerTextView.setText(String.valueOf(player_power));
-        String entity_name = getIntent().getStringExtra(BattleIntents.ENTITY_NAME);
-        int entity_power = getIntent().getIntExtra(BattleIntents.ENTITY_POWER, 0);
-        ennemyPowerTextView.setText(String.valueOf(entity_power));
+        // Get player and enemy details from the intent
+        String playerName = getIntent().getStringExtra(BattleIntents.PLAYER_NAME);
+        playerNameTextView.setText(playerName);
+        int playerHealth = getIntent().getIntExtra(BattleIntents.PLAYER_HEALTH, 0);
+        playerHealthTextView.setText(String.valueOf(playerHealth));
+        int playerPower = getIntent().getIntExtra(BattleIntents.PLAYER_POWER, 0);
+        playerPowerTextView.setText(String.valueOf(playerPower));
+        String enemyName = getIntent().getStringExtra(BattleIntents.ENTITY_NAME);
+        int enemyPower = getIntent().getIntExtra(BattleIntents.ENTITY_POWER, 0);
+        enemyPowerTextView.setText(String.valueOf(enemyPower));
 
-        assert entity_name != null;
-        ennemyNameTextView.setText(getResources().getIdentifier(entity_name.toLowerCase(), "string", getPackageName()));
-        enemyImageView.setImageResource(getResources().getIdentifier(entity_name.toLowerCase(), "drawable", getPackageName()));
+        // Set enemy name and image
+        assert enemyName != null;
+        enemyNameTextView.setText(getResources().getIdentifier(enemyName.toLowerCase(), "string", getPackageName()));
+        enemyImageView.setImageResource(getResources().getIdentifier(enemyName.toLowerCase(), "drawable", getPackageName()));
 
+        // Initialize attack and escape buttons
         Button attackButton = findViewById(R.id.btn_attack);
         Button escapeButton = findViewById(R.id.btn_escape);
 
+        // Prepare result intent with room coordinates
         Intent resultIntent = new Intent();
         resultIntent.putExtra("room_x", getIntent().getIntExtra("room_x", 0));
         resultIntent.putExtra("room_y", getIntent().getIntExtra("room_y", 0));
 
+        // Set attack button click listener
         attackButton.setOnClickListener(v -> {
             setResult(RESULT_OK, resultIntent);
             finish();
         });
 
+        // Set escape button click listener
         escapeButton.setOnClickListener(v -> {
             setResult(RESULT_CANCELED, resultIntent);
             finish();
         });
 
+        // Handle back press to cancel the action
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

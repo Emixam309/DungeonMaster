@@ -1,6 +1,6 @@
 package fr.univlittoral.projetcroisier.activities;
 
-import static fr.univlittoral.projetcroisier.game.Score.readScoresFromCSV;
+import static fr.univlittoral.projetcroisier.game.Score.readScoresFromFile;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,14 +17,23 @@ import fr.univlittoral.projetcroisier.R;
 import fr.univlittoral.projetcroisier.enums.Difficulty;
 import fr.univlittoral.projetcroisier.game.Score;
 
+/**
+ * Adapter class for displaying scores in a RecyclerView.
+ */
 public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ScoreViewHolder> {
 
     private final List<Score> scores;
     private final LayoutInflater inflater;
 
+    /**
+     * Constructor for the ScoresAdapter class.
+     *
+     * @param context The context of the activity.
+     * @param scores  The list of scores to display.
+     */
     public ScoresAdapter(Context context, List<Score> scores) {
-        this.scores = readScoresFromCSV(context);
-        this.scores.sort((s1, s2) -> Integer.compare(s2.getScore(), s1.getScore()));
+        this.scores = readScoresFromFile(context);
+        this.scores.sort((s1, s2) -> Integer.compare(s2.getScore(), s1.getScore())); // Sort scores in descending order
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -50,6 +59,9 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ScoreViewH
         return scores.size();
     }
 
+    /**
+     * ViewHolder class for holding score item views.
+     */
     static class ScoreViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvDateTime;
         private final TextView tvPlayerName;
@@ -57,6 +69,11 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ScoreViewH
         private final TextView tvDifficulty;
         private final TextView tvLevel;
 
+        /**
+         * Constructor for the ScoreViewHolder class.
+         *
+         * @param itemView The view of the score item.
+         */
         public ScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDateTime = itemView.findViewById(R.id.tvDateTime);
@@ -67,6 +84,12 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ScoreViewH
         }
     }
 
+    /**
+     * Gets the string resource ID for the given difficulty level.
+     *
+     * @param difficulty The difficulty level.
+     * @return The string resource ID for the difficulty level.
+     */
     private int getDifficultyString(Difficulty difficulty) {
         switch (difficulty) {
             case EASY:
