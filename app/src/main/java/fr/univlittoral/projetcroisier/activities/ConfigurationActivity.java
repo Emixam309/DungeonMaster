@@ -2,6 +2,9 @@ package fr.univlittoral.projetcroisier.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -171,10 +174,28 @@ public class ConfigurationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_scores) {
+            Intent intent = new Intent(this, ScoresActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /// Check if the fields are empty or equal to 0
     private boolean checkFieldsForEmptyValues(Difficulty difficulty) {
         String name = playerName.getText().toString();
         String health = playerHealth.getText().toString();
         String power = playerPower.getText().toString();
-        return name.isEmpty() || (difficulty == Difficulty.CUSTOM && (health.isEmpty() || power.isEmpty()));
+        return name.isBlank() || (difficulty == Difficulty.CUSTOM && health.isBlank() || Integer.parseInt(health) == 0) || (difficulty == Difficulty.CUSTOM && power.isBlank() || Integer.parseInt(power) == 0);
     }
 }

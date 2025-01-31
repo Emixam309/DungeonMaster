@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import fr.univlittoral.projetcroisier.enums.Difficulty;
 import fr.univlittoral.projetcroisier.enums.ItemType;
 import fr.univlittoral.projetcroisier.game.Battle;
 import fr.univlittoral.projetcroisier.game.Game;
+import fr.univlittoral.projetcroisier.game.Score;
 import fr.univlittoral.projetcroisier.intents.BattleIntents;
 import fr.univlittoral.projetcroisier.intents.DungeonIntents;
 import fr.univlittoral.projetcroisier.viewmodels.RoomViewModel;
@@ -135,6 +137,7 @@ public class DungeonActivity extends AppCompatActivity {
                             // Display game over message
                             resultTitle.setText(R.string.game_over);
                             resultValue.setText(R.string.game_lose);
+                            saveScore();
                         }
                     }
                 }
@@ -230,9 +233,9 @@ public class DungeonActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.dungeon_menu, menu);
         return true;
     }
 
@@ -240,6 +243,10 @@ public class DungeonActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_restart_game) {
             finish();
+            return true;
+        } else if (item.getItemId() == R.id.action_scores) {
+            Intent intent = new Intent(this, ScoresActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -322,5 +329,10 @@ public class DungeonActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private void saveScore() {
+        Score.saveScoreToCSV(this, game);
+        Toast.makeText(this, R.string.score_saved, Toast.LENGTH_SHORT).show();
     }
 }

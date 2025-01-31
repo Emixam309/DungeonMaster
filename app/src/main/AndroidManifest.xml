@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".activities.BattleActivity" />
         <activity android:name=".activities.ConfigurationActivity" />
+        <activity android:name=".activities.ScoresActivity" />
     </application>
 
 </manifest>

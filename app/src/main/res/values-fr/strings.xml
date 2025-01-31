@@ -46,4 +46,7 @@
     <string name="difficulty_custom">Personnalisé</string>
     <string name="game_over">Partie Terminée</string>
     <string name="empty_fields_error">Certains champs sont vides</string>
+    <string name="score_saved">Le score a été sauvegardé</string>
+    <string name="scores">Scores</string>
+    <string name="score">Score :</string>
 </resources>
